@@ -1,30 +1,30 @@
 package org.mycorp.training.kotlinboot.controller
 
+import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.junit.jupiter.MockitoExtension
 import org.mycorp.training.kotlinboot.dto.BookDTO
 import org.mycorp.training.kotlinboot.service.BookService
-import org.mockito.Mockito.`when` as whenever
 
 /**
  *
  */
-@ExtendWith(MockitoExtension::class)
+@ExtendWith(MockKExtension::class)
 class BookControllerTest {
-    @Mock
+    @MockK
     lateinit var bookService: BookService
 
-    @InjectMocks
+    @InjectMockKs
     lateinit var bookController: BookController
 
     @Test
-    fun getBooks() {
+    fun `Return a list of books`() {
         val books = listOf(BookDTO("title1", "isbn1"), BookDTO("title2", "isbn2"))
-        whenever(bookService.getBooks()).thenReturn(books)
+        every { bookService.getBooks() } returns books
 
         val actual = bookController.getBooks()
 
@@ -32,11 +32,21 @@ class BookControllerTest {
     }
 
     @Test
-    fun getBook() {
+    fun `Return 1 book by id`() {
         val book = BookDTO("title1", "isbn1")
-        whenever(bookService.getBook(1)).thenReturn(book)
+        every { bookService.getBook(eq(1)) } returns book
 
         val actual = bookController.getBook(1)
+
+        assertThat(actual).isSameAs(book)
+    }
+
+    @Test
+    fun `Return 1 book by isbn`() {
+        val book = BookDTO("title1", "isbn1")
+        every { bookService.getBookByIsbn(eq("isbn1")) } returns book
+
+        val actual = bookController.getBookByIsbn("isbn1")
 
         assertThat(actual).isSameAs(book)
     }

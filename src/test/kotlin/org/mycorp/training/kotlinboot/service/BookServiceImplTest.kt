@@ -1,42 +1,53 @@
 package org.mycorp.training.kotlinboot.service
 
+import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatExceptionOfType
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.junit.jupiter.MockitoExtension
 import org.mycorp.training.kotlinboot.dto.BookDTO
+import org.mycorp.training.kotlinboot.exception.NotFoundException
+import org.mycorp.training.kotlinboot.mapper.BookMapper
 import org.mycorp.training.kotlinboot.model.Book
 import org.mycorp.training.kotlinboot.repository.BookRepository
-import org.mockito.Mockito.`when` as whenever
+import org.springframework.data.repository.findByIdOrNull
 
 /**
  *
  */
-@ExtendWith(MockitoExtension::class)
+@ExtendWith(MockKExtension::class)
 class BookServiceImplTest {
-    @Mock
+    @MockK
     lateinit var bookRepository: BookRepository
 
-    @InjectMocks
+    @MockK
+    lateinit var bookMapper: BookMapper
+
+    @InjectMockKs
     lateinit var bookService: BookServiceImpl
 
     @Test
-    fun getBooks() {
+    fun `Return a list of books - no exception`() {
+        val book1 = Book(
+            "title 1",
+            "isbn 1",
+            1,
+        )
+        val book2 = Book(
+            "title 2",
+            "isbn 2",
+            2,
+        )
         val books = listOf(
-            Book(
-                "title 1",
-                "isbn 1",
-                1,
-            ), Book(
-                "title 2",
-                "isbn 2",
-                2,
-            )
+            book1, book2
         )
 
-        whenever(bookRepository.findAll()).thenReturn(books)
+        every { bookRepository.findAll() } returns books
+        every { bookMapper.toDTO(refEq(book1)) } returns BookDTO("title 1", "isbn 1")
+        every { bookMapper.toDTO(refEq(book2)) } returns BookDTO("title 2", "isbn 2")
 
         val actual = bookService.getBooks()
 
@@ -46,14 +57,15 @@ class BookServiceImplTest {
     }
 
     @Test
-    fun getBook() {
+    fun `Return 1 book by id - no exception`() {
         val book = Book(
             "title 1",
             "isbn 1",
             1,
         )
 
-        whenever(bookRepository.findById(1)).thenReturn(java.util.Optional.of(book))
+        every { bookRepository.findByIdOrNull(eq(1L)) } returns book
+        every { bookMapper.toDTO(refEq(book)) } returns BookDTO("title 1", "isbn 1")
 
         val actual = bookService.getBook(1)
 
@@ -61,17 +73,36 @@ class BookServiceImplTest {
     }
 
     @Test
-    fun getBookByIsbn() {
+    fun `Return 1 book by id - NotFound exception`() {
+        every { bookRepository.findByIdOrNull(eq(1L)) } returns null
+
+        assertThatExceptionOfType(NotFoundException::class.java).isThrownBy {
+            bookService.getBook(1)
+        }.withMessage("Book with ID 1 not found")
+    }
+
+    @Test
+    fun `Return 1 by isbn - no exception`() {
         val book = Book(
             "title 1",
             "isbn 1",
             1,
         )
 
-        whenever(bookRepository.findByIsbn("isbn 1")).thenReturn(book)
+        every { bookRepository.findByIsbn(eq("isbn 1")) } returns book
+        every { bookMapper.toDTO(refEq(book)) } returns BookDTO("title 1", "isbn 1")
 
         val actual = bookService.getBookByIsbn("isbn 1")
 
         assertThat(actual).isEqualTo(BookDTO("title 1", "isbn 1"))
+    }
+
+    @Test
+    fun `Return 1 by isbn - NotFound exception`() {
+        every { bookRepository.findByIsbn(eq("isbn 1")) } returns null
+
+        assertThatExceptionOfType(NotFoundException::class.java).isThrownBy {
+            bookService.getBookByIsbn("isbn 1")
+        }.withMessage("Book with ISBN isbn 1 not found")
     }
 }

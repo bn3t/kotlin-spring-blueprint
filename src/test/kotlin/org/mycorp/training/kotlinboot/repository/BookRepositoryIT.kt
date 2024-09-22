@@ -14,7 +14,7 @@ class BookRepositoryIT {
     lateinit var bookRepository: BookRepository
 
     @Test
-    fun findByIsbn() {
+    fun `Find 1 book by isbn`() {
         val book = bookRepository.findByIsbn("test-isbn-2")
 
         assertThat(book).isNotNull()
