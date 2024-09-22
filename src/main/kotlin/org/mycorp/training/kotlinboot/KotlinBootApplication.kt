@@ -9,3 +9,4 @@ class KotlinBootApplication
 fun main(args: Array<String>) {
     runApplication<KotlinBootApplication>(*args)
 }
+
