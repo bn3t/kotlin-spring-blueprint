@@ -34,7 +34,7 @@ class BookControllerTest {
     @Test
     fun getBook() {
         val book = BookDTO("title1", "isbn1")
-        whenever(bookService.getBook(1)).thenReturn(book);
+        whenever(bookService.getBook(1)).thenReturn(book)
 
         val actual = bookController.getBook(1)
 
