@@ -34,6 +34,7 @@
         <mockk.version>1.13.1</mockk.version>
         <springmockk.version>4.0.2</springmockk.version>
         <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
+        <http4k-bom.version>5.31.0.0</http4k-bom.version>
     </properties>
     <dependencies>
         <dependency>
@@ -98,6 +99,12 @@
             <groupId>com.ninja-squad</groupId>
             <artifactId>springmockk</artifactId>
             <version>${springmockk.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Add Spring WebFlux for WebTestClient -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
