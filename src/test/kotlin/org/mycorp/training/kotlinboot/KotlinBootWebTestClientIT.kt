@@ -13,7 +13,7 @@ class KotlinBootWebTestClientIT {
 
     @Test
     fun `Call to API api-books returns Books`() {
-        webTestClient.get().uri("/api/books/")
+        webTestClient.get().uri("/api/books")
             .exchange()
             .expectStatus().isOk()
             .expectBodyList(BookDTO::class.java)

@@ -4,6 +4,8 @@ import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import org.junit.jupiter.api.Test
 import org.mycorp.training.kotlinboot.dto.BookDTO
+import org.mycorp.training.kotlinboot.mapper.BookMapper
+import org.mycorp.training.kotlinboot.rest.model.BookResponse
 import org.mycorp.training.kotlinboot.service.BookService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -20,17 +22,26 @@ class BookControllerIT {
     @MockkBean
     lateinit var bookService: BookService
 
+    @MockkBean
+    lateinit var bookMapper: BookMapper
+
     @Test
     fun `Call to API api-books returns Books`() {
-        every { bookService.getBooks() } returns listOf(BookDTO("title 1", "isbn 1"))
-        mockMvc.perform(get("/api/books/"))
+        val bookDTO = BookDTO("title 1", "isbn 1")
+        val bookResponse = BookResponse().title("title 1").isbn("isbn 1")
+        every { bookService.getBooks() } returns listOf(bookDTO)
+        every { bookMapper.toApiResponse(refEq(bookDTO)) } returns bookResponse
+
+        mockMvc.perform(get("/api/books"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$[0].title").value("title 1"))
     }
 
     @Test
     fun `Call to API api-book by ID returns Books`() {
+        val bookResponse = BookResponse().title("title 1").isbn("isbn 1")
         every { bookService.getBook(eq(1L)) } returns BookDTO("title 1", "isbn 1")
+        every { bookMapper.toApiResponse(any()) } returns bookResponse
         mockMvc.perform(get("/api/books/1"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("title").value("title 1"))
@@ -38,7 +49,10 @@ class BookControllerIT {
 
     @Test
     fun `Call to API api-book by isbn returns Books`() {
-        every { bookService.getBookByIsbn(eq("isbn 1")) } returns BookDTO("title 1", "isbn 1")
+        val bookResponse = BookResponse().title("title 1").isbn("isbn 1")
+        val bookDTO = BookDTO("title 1", "isbn 1")
+        every { bookService.getBookByIsbn(eq("isbn 1")) } returns bookDTO
+        every { bookMapper.toApiResponse(refEq(bookDTO)) } returns bookResponse
         mockMvc.perform(get("/api/books/isbn/isbn 1"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("title").value("title 1"))

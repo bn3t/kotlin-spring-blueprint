@@ -1,10 +1,9 @@
 package org.mycorp.training.kotlinboot.controller
 
-import org.mycorp.training.kotlinboot.dto.BookDTO
+import org.mycorp.training.kotlinboot.mapper.BookMapper
+import org.mycorp.training.kotlinboot.rest.BookApi
+import org.mycorp.training.kotlinboot.rest.model.BookResponse
 import org.mycorp.training.kotlinboot.service.BookService
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 /**
@@ -12,23 +11,19 @@ import org.springframework.web.bind.annotation.RestController
  */
 
 @RestController
-@RequestMapping("/api/books")
 class BookController(
-    val bookService: BookService
-) {
+    val bookService: BookService, val bookMapper: BookMapper
+) : BookApi {
 
-    @GetMapping("/")
-    fun getBooks(): List<BookDTO> {
-        return bookService.getBooks()
+    override fun getBookById(bookId: Long?): BookResponse {
+        return bookMapper.toApiResponse(bookService.getBook(bookId!!))
     }
 
-    @GetMapping("/{bookId}")
-    fun getBook(@PathVariable("bookId") bookId: Long): BookDTO {
-        return bookService.getBook(bookId)
+    override fun getBookByIsbn(isbn: String?): BookResponse {
+        return bookMapper.toApiResponse(bookService.getBookByIsbn(isbn!!))
     }
 
-    @GetMapping("/isbn/{isbn}")
-    fun getBookByIsbn(@PathVariable("isbn") isbn: String): BookDTO {
-        return bookService.getBookByIsbn(isbn)
+    override fun getBooks(): MutableList<BookResponse> {
+        return bookService.getBooks().map { bookMapper.toApiResponse(it) }.toMutableList()
     }
 }

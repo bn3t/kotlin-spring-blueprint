@@ -1,0 +1,73 @@
+openapi: 3.0.0
+info:
+  title: Book API
+  version: 1.0.0
+paths:
+  /api/books:
+    get:
+      tags:
+        - Book
+      summary: Get all books
+      operationId: getBooks
+      responses:
+        '200':
+          description: A list of books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookResponse'
+  /api/books/{bookId}:
+    get:
+      tags:
+        - Book
+      summary: Get a book by ID
+      operationId: getBookById
+      parameters:
+        - in: path
+          name: bookId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: A single book
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResponse'
+        '404':
+          description: Book not found
+  /api/books/isbn/{isbn}:
+    get:
+      tags:
+        - Book
+      summary: Get a book by ISBN
+      operationId: getBookByIsbn
+      parameters:
+        - in: path
+          name: isbn
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A single book
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResponse'
+        '404':
+          description: Book not found
+components:
+  schemas:
+    BookResponse:
+      description: Book Response
+      type: object
+      properties:
+        title:
+          type: string
+        isbn:
+          type: string

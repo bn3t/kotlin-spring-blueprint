@@ -25,7 +25,7 @@ class KotlinBootApplicationIT {
 
     @Test
     fun `Call to API api-books returns Books`() {
-        val actual = restTemplate.getForEntity<Array<BookDTO>>("/api/books/")
+        val actual = restTemplate.getForEntity<Array<BookDTO>>("/api/books")
 
         assertThat(actual.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(actual.body).contains(BookDTO("Java Programming", "1234567890"))
