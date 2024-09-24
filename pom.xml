@@ -8,14 +8,17 @@
         <version>3.3.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>org.mycorp.training</groupId>
-    <artifactId>kotlin-boot</artifactId>
+    <groupId>org.mycorp</groupId>
+    <artifactId>kotlin-spring-blueprint</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>kotlin-boot</name>
-    <description>kotlin-boot</description>
+    <name>kotlin-spring-blueprint</name>
+    <description>A spring boot project to define the blueprint for other projects.</description>
     <url/>
     <licenses>
-        <license/>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
     </licenses>
     <developers>
         <developer/>
@@ -148,10 +151,10 @@
                         </goals>
                         <configuration>
                             <inputSpec>${project.basedir}/api/book-api.yaml</inputSpec>
-                            <packageName>org.mycorp.training.kotlinboot</packageName>
-                            <apiPackage>org.mycorp.training.kotlinboot.rest</apiPackage>
-                            <modelPackage>org.mycorp.training.kotlinboot.rest.model</modelPackage>
-                            <invokerPackage>org.mycorp.training.kotlinboot.invoker</invokerPackage>
+                            <packageName>org.mycorp.blueprint.kotlinboot</packageName>
+                            <apiPackage>org.mycorp.blueprint.kotlinboot.rest</apiPackage>
+                            <modelPackage>org.mycorp.blueprint.kotlinboot.rest.model</modelPackage>
+                            <invokerPackage>org.mycorp.blueprint.kotlinboot.invoker</invokerPackage>
                             <addCompileSourceRoot>true</addCompileSourceRoot>
                             <generatorName>spring</generatorName>
                             <artifactId>kotlinboot-rest</artifactId>
@@ -163,7 +166,7 @@
                                 <library>spring-boot</library>
                                 <interfaceOnly>true</interfaceOnly>
                                 <useSpringBoot3>true</useSpringBoot3>
-                                <basePackage>org.mycorp.training.kotlinboot.v1</basePackage>
+                                <basePackage>org.mycorp.blueprint.kotlinboot.v1</basePackage>
                                 <useTags>true</useTags>
                                 <documentationProvider>none</documentationProvider>
                                 <useResponseEntity>false</useResponseEntity>
@@ -210,11 +213,11 @@
                         </goals>
                         <configuration>
                             <excludes>
-                                <exclude>org/mycorp/training/kotlinboot/rest/**</exclude>
-                                <exclude>org/mycorp/training/kotlinboot/model/**</exclude>
-                                <exclude>org/mycorp/training/kotlinboot/dto/**</exclude>
-                                <exclude>org/mycorp/training/kotlinboot/mapper/**Impl.*</exclude>
-                                <exclude>org/mycorp/training/kotlinboot/KotlinBootApplication*.*</exclude>
+                                <exclude>org/mycorp/blueprint/kotlinboot/rest/**</exclude>
+                                <exclude>org/mycorp/blueprint/kotlinboot/model/**</exclude>
+                                <exclude>org/mycorp/blueprint/kotlinboot/dto/**</exclude>
+                                <exclude>org/mycorp/blueprint/kotlinboot/mapper/**Impl.*</exclude>
+                                <exclude>org/mycorp/blueprint/kotlinboot/KotlinBootApplication*.*</exclude>
                             </excludes>
                         </configuration>
                     </execution>
@@ -226,11 +229,11 @@
                         </goals>
                         <configuration>
                             <excludes>
-                                <exclude>org/mycorp/training/kotlinboot/rest/**</exclude>
-                                <exclude>org/mycorp/training/kotlinboot/model/**</exclude>
-                                <exclude>org/mycorp/training/kotlinboot/dto/**</exclude>
-                                <exclude>org/mycorp/training/kotlinboot/mapper/**Impl.*</exclude>
-                                <exclude>org/mycorp/training/kotlinboot/KotlinBootApplication*.*</exclude>
+                                <exclude>org/mycorp/blueprint/kotlinboot/rest/**</exclude>
+                                <exclude>org/mycorp/blueprint/kotlinboot/model/**</exclude>
+                                <exclude>org/mycorp/blueprint/kotlinboot/dto/**</exclude>
+                                <exclude>org/mycorp/blueprint/kotlinboot/mapper/**Impl.*</exclude>
+                                <exclude>org/mycorp/blueprint/kotlinboot/KotlinBootApplication*.*</exclude>
                             </excludes>
                             <rules>
                                 <rule>
