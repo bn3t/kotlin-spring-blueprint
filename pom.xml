@@ -190,7 +190,39 @@
                 <configuration>
                     <includes>
                         <include>**/*Test.java</include>
+                        <include>**/*Test.kt</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/*E2ETest.java</exclude>
+                        <exclude>**/*E2ETest.kt</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>integration-test</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                        </goals>
+                        <phase>test</phase>
+                    </execution>
+                    <execution>
+                        <id>verify</id>
+                        <goals>
+                            <goal>verify</goal>
+                        </goals>
+                        <phase>test</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <includes>
                         <include>**/*IT.java</include>
+                        <include>**/*IT.kt</include>
+                        <include>**/*E2ETest.java</include>
+                        <include>**/*E2ETest.kt</include>
                     </includes>
                 </configuration>
             </plugin>

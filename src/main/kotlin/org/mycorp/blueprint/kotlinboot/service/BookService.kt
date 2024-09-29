@@ -1,6 +1,8 @@
 package org.mycorp.blueprint.kotlinboot.service
 
+import org.mycorp.blueprint.kotlinboot.dto.BookCreationDTO
 import org.mycorp.blueprint.kotlinboot.dto.BookDTO
+import org.mycorp.blueprint.kotlinboot.dto.BookUpdateDTO
 
 /**
  * Book service interface.
@@ -26,4 +28,10 @@ interface BookService {
      * @return The book.
      */
     fun getBookByIsbn(isbn: String): BookDTO
+
+    fun addBook(bookRequest: BookCreationDTO): BookDTO
+
+    fun updateBook(bookId: Long, bookRequest: BookUpdateDTO): BookDTO
+
+    fun deleteBook(bookId: Long)
 }

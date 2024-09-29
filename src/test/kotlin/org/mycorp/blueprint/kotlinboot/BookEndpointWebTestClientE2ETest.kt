@@ -1,13 +1,19 @@
 package org.mycorp.blueprint.kotlinboot
 
 import org.junit.jupiter.api.Test
-import org.mycorp.blueprint.kotlinboot.dto.BookDTO
+import org.mycorp.blueprint.kotlinboot.rest.model.BookDetailsResponse
+import org.mycorp.blueprint.kotlinboot.rest.model.BookListResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.reactive.server.WebTestClient
+import java.math.BigDecimal
+import java.time.LocalDate
+
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class KotlinBootWebTestClientIT {
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
+class BookEndpointWebTestClientE2ETest {
     @Autowired
     lateinit var webTestClient: WebTestClient
 
@@ -16,9 +22,19 @@ class KotlinBootWebTestClientIT {
         webTestClient.get().uri("/api/books")
             .exchange()
             .expectStatus().isOk()
-            .expectBodyList(BookDTO::class.java)
+            .expectBodyList(BookListResponse::class.java)
             .hasSize(2)
-            .contains(BookDTO("Java Programming", "1234567890"))
+            .contains(
+                BookListResponse(
+                ).id(1)
+                    .title("Java Programming")
+                    .isbn("1234567890"),
+            ).contains(
+                BookListResponse(
+                ).id(2)
+                    .title("Kotlin Programming")
+                    .isbn("1234567891")
+            )
     }
 
     @Test
@@ -26,8 +42,14 @@ class KotlinBootWebTestClientIT {
         webTestClient.get().uri("/api/books/1")
             .exchange()
             .expectStatus().isOk()
-            .expectBody(BookDTO::class.java)
-            .isEqualTo(BookDTO("Java Programming", "1234567890"))
+            .expectBody(BookDetailsResponse::class.java)
+            .isEqualTo(
+                BookDetailsResponse().id(1)
+                    .title("Java Programming")
+                    .isbn("1234567890").price(BigDecimal("100.00")).publicationDate(
+                        LocalDate.of(2020, 1, 1)
+                    )
+            )
     }
 
     @Test
@@ -44,8 +66,14 @@ class KotlinBootWebTestClientIT {
         webTestClient.get().uri("/api/books/isbn/1234567890")
             .exchange()
             .expectStatus().isOk()
-            .expectBody(BookDTO::class.java)
-            .isEqualTo(BookDTO("Java Programming", "1234567890"))
+            .expectBody(BookDetailsResponse::class.java)
+            .isEqualTo(
+                BookDetailsResponse().id(1)
+                    .title("Java Programming")
+                    .isbn("1234567890").price(BigDecimal("100.00")).publicationDate(
+                        LocalDate.of(2020, 1, 1)
+                    )
+            )
     }
 
     @Test

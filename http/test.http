@@ -6,6 +6,14 @@ GET http://localhost:8080/api/books/1
 
 ###
 
+GET http://localhost:8080/api/books/2
+
+###
+
+GET http://localhost:8080/api/books/3
+
+###
+
 GET http://localhost:8080/api/books/1000
 
 ###
@@ -14,5 +22,30 @@ GET http://localhost:8080/api/books/isbn/1234567890
 
 ###
 
+GET http://localhost:8080/api/books/isbn/9781617294945
+
+###
+
 GET http://localhost:8080/api/books/isbn/87765
+
+### Add a new book
+POST http://localhost:8080/api/books
+Content-Type: application/json
+
+{
+  "title": "Spring in Action",
+  "isbn": "9781617294945"
+}
+
+### Delete a book (replace {bookId} with the actual ID)
+DELETE http://localhost:8080/api/books/1
+
+### Update a book (replace {bookId} with the actual ID)
+PUT http://localhost:8080/api/books/1
+Content-Type: application/json
+
+{
+  "title": "Spring Boot in Action",
+  "isbn": "9781617294945"
+}
 

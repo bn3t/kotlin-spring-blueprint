@@ -2,6 +2,8 @@ package org.mycorp.blueprint.kotlinboot.model
 
 import jakarta.persistence.Entity
 import org.hibernate.annotations.NaturalId
+import java.math.BigDecimal
+import java.time.LocalDate
 
 /**
  *
@@ -11,6 +13,8 @@ class Book(
     var title: String,
     @NaturalId
     var isbn: String,
+    var price: BigDecimal,
+    var publicationDate: LocalDate,
     id: Long? = null,
 ) : BaseEntity(id) {
 

@@ -14,6 +14,8 @@ import org.mycorp.blueprint.kotlinboot.mapper.BookMapper
 import org.mycorp.blueprint.kotlinboot.model.Book
 import org.mycorp.blueprint.kotlinboot.repository.BookRepository
 import org.springframework.data.repository.findByIdOrNull
+import java.math.BigDecimal
+import java.time.LocalDate
 
 /**
  *
@@ -34,11 +36,12 @@ class BookServiceImplTest {
         val book1 = Book(
             "title 1",
             "isbn 1",
-            1,
+            BigDecimal("10.00"), LocalDate.of(2020, 1, 1), 1
         )
         val book2 = Book(
             "title 2",
             "isbn 2",
+            BigDecimal("10.00"), LocalDate.of(2020, 1, 1),
             2,
         )
         val books = listOf(
@@ -46,13 +49,28 @@ class BookServiceImplTest {
         )
 
         every { bookRepository.findAll() } returns books
-        every { bookMapper.toDTO(refEq(book1)) } returns BookDTO("title 1", "isbn 1")
-        every { bookMapper.toDTO(refEq(book2)) } returns BookDTO("title 2", "isbn 2")
+        every { bookMapper.toBookDTO(refEq(book1)) } returns BookDTO(
+            1, "title 1", "isbn 1",
+            BigDecimal("10.00"), LocalDate.of(2020, 1, 1)
+        )
+        every { bookMapper.toBookDTO(refEq(book2)) } returns BookDTO(
+            2, "title 2", "isbn 2",
+            BigDecimal("10.00"), LocalDate.of(2020, 1, 1)
+        )
 
         val actual = bookService.getBooks()
 
         assertThat(actual).isEqualTo(
-            listOf(BookDTO("title 1", "isbn 1"), BookDTO("title 2", "isbn 2"))
+            listOf(
+                BookDTO(
+                    1, "title 1", "isbn 1",
+                    BigDecimal("10.00"), LocalDate.of(2020, 1, 1)
+                ), BookDTO(
+                    2,
+                    "title 2", "isbn 2",
+                    BigDecimal("10.00"), LocalDate.of(2020, 1, 1)
+                )
+            )
         )
     }
 
@@ -61,15 +79,24 @@ class BookServiceImplTest {
         val book = Book(
             "title 1",
             "isbn 1",
+            BigDecimal("10.00"), LocalDate.of(2020, 1, 1),
             1,
         )
 
         every { bookRepository.findByIdOrNull(eq(1L)) } returns book
-        every { bookMapper.toDTO(refEq(book)) } returns BookDTO("title 1", "isbn 1")
+        every { bookMapper.toBookDTO(refEq(book)) } returns BookDTO(
+            1, "title 1", "isbn 1",
+            BigDecimal("10.00"), LocalDate.of(2020, 1, 1)
+        )
 
         val actual = bookService.getBook(1)
 
-        assertThat(actual).isEqualTo(BookDTO("title 1", "isbn 1"))
+        assertThat(actual).isEqualTo(
+            BookDTO(
+                1, "title 1", "isbn 1",
+                BigDecimal("10.00"), LocalDate.of(2020, 1, 1)
+            )
+        )
     }
 
     @Test
@@ -86,15 +113,24 @@ class BookServiceImplTest {
         val book = Book(
             "title 1",
             "isbn 1",
+            BigDecimal("10.00"), LocalDate.of(2020, 1, 1),
             1,
         )
 
         every { bookRepository.findByIsbn(eq("isbn 1")) } returns book
-        every { bookMapper.toDTO(refEq(book)) } returns BookDTO("title 1", "isbn 1")
+        every { bookMapper.toBookDTO(refEq(book)) } returns BookDTO(
+            1, "title 1", "isbn 1",
+            BigDecimal("10.00"), LocalDate.of(2020, 1, 1)
+        )
 
         val actual = bookService.getBookByIsbn("isbn 1")
 
-        assertThat(actual).isEqualTo(BookDTO("title 1", "isbn 1"))
+        assertThat(actual).isEqualTo(
+            BookDTO(
+                1, "title 1", "isbn 1",
+                BigDecimal("10.00"), LocalDate.of(2020, 1, 1)
+            )
+        )
     }
 
     @Test
