@@ -1,4 +1,4 @@
-package org.mycorp.blueprint.kotlinboot
+package org.mycorp.blueprint.kotlinboot.e2e
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -44,7 +44,11 @@ class BookEndpointRestTemplateE2ETest() {
 
         assertThat(actual.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(actual.body).contains(
-            BookListResponse().id(1).title("Java Programming").isbn("1234567890")
+            BookListResponse(
+                1,
+                "Java Programming",
+                "1234567890",
+            )
         )
     }
 
@@ -54,18 +58,13 @@ class BookEndpointRestTemplateE2ETest() {
 
         assertThat(actual.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(actual.body).isEqualTo(
-            BookDetailsResponse()
-                .id(
-                    1
-                ).title(
-                    "Java Programming"
-                ).isbn(
-                    "1234567890"
-                ).price(
-                    BigDecimal("100.00")
-                ).publicationDate(
-                    LocalDate.of(2020, 1, 1)
-                )
+            BookDetailsResponse(
+                1,
+                "Java Programming",
+                "1234567890",
+                BigDecimal("100.00"),
+                LocalDate.of(2020, 1, 1)
+            )
         )
     }
 
@@ -83,18 +82,13 @@ class BookEndpointRestTemplateE2ETest() {
 
         assertThat(actual.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(actual.body).isEqualTo(
-            BookDetailsResponse()
-                .id(
-                    1
-                ).title(
-                    "Java Programming"
-                ).isbn(
-                    "1234567890"
-                ).price(
-                    BigDecimal("100.00")
-                ).publicationDate(
-                    LocalDate.of(2020, 1, 1)
-                )
+            BookDetailsResponse(
+                1,
+                "Java Programming",
+                "1234567890",
+                BigDecimal("100.00"),
+                LocalDate.of(2020, 1, 1)
+            )
         )
     }
 
@@ -110,44 +104,36 @@ class BookEndpointRestTemplateE2ETest() {
     fun `Call to API api-books to add returns 201`() {
         val actual = restTemplate.postForEntity<BookDetailsResponse>(
             "/api/books",
-            BookCreationRequest().title("A new title")
-                .isbn("98765")
-                .price(BigDecimal("200.00"))
-                .publicationDate(LocalDate.of(2024, 1, 1))
+            BookCreationRequest(
+                "A new title",
+                "98765",
+                BigDecimal("200.00"),
+                LocalDate.of(2024, 1, 1)
+            )
         )
 
         assertThat(actual.statusCode).isEqualTo(HttpStatus.CREATED)
 
         assertThat(actual.body).isEqualTo(
-            BookDetailsResponse()
-                .id(
-                    951
-                ).title(
-                    "A new title"
-                ).isbn(
-                    "98765"
-                ).price(
-                    BigDecimal("200.00")
-                ).publicationDate(
-                    LocalDate.of(2024, 1, 1)
-                )
+            BookDetailsResponse(
+                951,
+                "A new title",
+                "98765",
+                BigDecimal("200.00"),
+                LocalDate.of(2024, 1, 1)
+            )
         )
 
         val actualGet = restTemplate.getForEntity<BookDetailsResponse>("/api/books/951")
         assertThat(actualGet.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(actualGet.body).isEqualTo(
-            BookDetailsResponse()
-                .id(
-                    951
-                ).title(
-                    "A new title"
-                ).isbn(
-                    "98765"
-                ).price(
-                    BigDecimal("200.00")
-                ).publicationDate(
-                    LocalDate.of(2024, 1, 1)
-                )
+            BookDetailsResponse(
+                951,
+                "A new title",
+                "98765",
+                BigDecimal("200.00"),
+                LocalDate.of(2024, 1, 1)
+            )
         )
 
         val book = bookRepository.findById(951).get()
@@ -162,9 +148,11 @@ class BookEndpointRestTemplateE2ETest() {
             "/api/books/1",
             HttpMethod.PUT,
             HttpEntity(
-                BookUpdateRequest().title("A new title")
-                    .price(BigDecimal("200.00"))
-                    .publicationDate(LocalDate.of(2024, 1, 1))
+                BookUpdateRequest(
+                    "A new title",
+                    BigDecimal("200.00"),
+                    LocalDate.of(2024, 1, 1)
+                )
             ),
             BookDetailsResponse::class.java
         )
@@ -172,35 +160,25 @@ class BookEndpointRestTemplateE2ETest() {
         assertThat(actual.statusCode).isEqualTo(HttpStatus.OK)
 
         assertThat(actual.body).isEqualTo(
-            BookDetailsResponse()
-                .id(
-                    1
-                ).title(
-                    "A new title"
-                ).isbn(
-                    "1234567890"
-                ).price(
-                    BigDecimal("200.00")
-                ).publicationDate(
-                    LocalDate.of(2024, 1, 1)
-                )
+            BookDetailsResponse(
+                1,
+                "A new title",
+                "1234567890",
+                BigDecimal("200.00"),
+                LocalDate.of(2024, 1, 1)
+            )
         )
 
         val actualGet = restTemplate.getForEntity<BookDetailsResponse>("/api/books/1")
         assertThat(actualGet.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(actualGet.body).isEqualTo(
-            BookDetailsResponse()
-                .id(
-                    1
-                ).title(
-                    "A new title"
-                ).isbn(
-                    "1234567890"
-                ).price(
-                    BigDecimal("200.00")
-                ).publicationDate(
-                    LocalDate.of(2024, 1, 1)
-                )
+            BookDetailsResponse(
+                1,
+                "A new title",
+                "1234567890",
+                BigDecimal("200.00"),
+                LocalDate.of(2024, 1, 1)
+            )
         )
 
         val book = bookRepository.findById(1).get()

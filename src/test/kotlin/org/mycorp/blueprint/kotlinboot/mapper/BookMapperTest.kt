@@ -39,9 +39,11 @@ class BookMapperTest {
 
     @Test
     fun `Map from BookUpdateRequest to BookUpdateDTO - toBookUpdateDTO`() {
-        val bookUpdateRequest = BookUpdateRequest().title("title 1")
-            .price(BigDecimal("10.00"))
-            .publicationDate(LocalDate.of(2020, 1, 1))
+        val bookUpdateRequest = BookUpdateRequest(
+            "title 1",
+            BigDecimal("10.00"),
+            LocalDate.of(2020, 1, 1)
+        )
 
         val actual = mapper.toBookUpdateDTO(bookUpdateRequest)
 
@@ -56,10 +58,12 @@ class BookMapperTest {
 
     @Test
     fun `Map from BookCreationRequest to BookUpdateDTO - toBookCreationDTO`() {
-        val bookCreationRequest = BookCreationRequest().title("title 1")
-            .isbn("isbn 1")
-            .price(BigDecimal("10.00"))
-            .publicationDate(LocalDate.of(2020, 1, 1))
+        val bookCreationRequest = BookCreationRequest(
+            "title 1",
+            "isbn 1",
+            BigDecimal("10.00"),
+            LocalDate.of(2020, 1, 1)
+        )
 
         val actual = mapper.toBookCreationDTO(bookCreationRequest)
 
@@ -85,11 +89,13 @@ class BookMapperTest {
         val actual = mapper.toBookDetailsResponse(bookDTO)
 
         assertThat(actual).isEqualTo(
-            BookDetailsResponse().id(1)
-                .title("title 1")
-                .isbn("isbn 1")
-                .price(BigDecimal("10.00"))
-                .publicationDate(LocalDate.of(2020, 1, 1))
+            BookDetailsResponse(
+                1,
+                "title 1",
+                "isbn 1",
+                BigDecimal("10.00"),
+                LocalDate.of(2020, 1, 1)
+            )
         )
     }
 
@@ -105,9 +111,11 @@ class BookMapperTest {
         val actual = mapper.toBookListResponse(bookDTO)
 
         assertThat(actual).isEqualTo(
-            BookListResponse().id(1)
-                .title("title 1")
-                .isbn("isbn 1")
+            BookListResponse(
+                1,
+                "title 1",
+                "isbn 1",
+            )
         )
     }
 

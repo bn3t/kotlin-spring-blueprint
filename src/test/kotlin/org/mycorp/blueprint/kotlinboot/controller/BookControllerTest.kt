@@ -20,9 +20,6 @@ import org.mycorp.blueprint.kotlinboot.service.BookService
 import java.math.BigDecimal
 import java.time.LocalDate
 
-/**
- *
- */
 @ExtendWith(MockKExtension::class)
 class BookControllerTest {
     @MockK
@@ -51,13 +48,17 @@ class BookControllerTest {
             )
         )
         val bookResponse1 =
-            BookListResponse().id(1)
-                .title("title 1")
-                .isbn("isbn 1")
+            BookListResponse(
+                1,
+                "title 1",
+                "isbn 1",
+            )
         val bookResponse2 =
-            BookListResponse().id(2)
-                .title("title 2")
-                .isbn("isbn 2")
+            BookListResponse(
+                2,
+                "title 2",
+                "isbn 2",
+            )
 
         every { bookService.getBooks() } returns books
         every { bookMapper.toBookListResponse(any()) } returnsMany listOf(bookResponse1, bookResponse2)
@@ -110,9 +111,11 @@ class BookControllerTest {
 
     @Test
     fun `Add a book call a service to add`() {
-        val bookCreationRequest = BookCreationRequest().title("title 1").isbn("isbn 1")
-            .price(BigDecimal("10.00"))
-            .publicationDate(LocalDate.of(2020, 1, 1))
+        val bookCreationRequest = BookCreationRequest(
+            "title 1",
+            "isbn 1",
+            BigDecimal("10.00"), LocalDate.of(2020, 1, 1)
+        )
         val bookDTO = BookDTO(
             1,
             "title 1",
@@ -125,7 +128,13 @@ class BookControllerTest {
             BigDecimal("10.00"), LocalDate.of(2020, 1, 1)
         )
         val bookResponse1 =
-            BookDetailsResponse().id(1).title("title1").isbn("isbn1").publicationDate(LocalDate.of(2020, 1, 1))
+            BookDetailsResponse(
+                1,
+                "title 1",
+                "isbn 1",
+                BigDecimal("10.00"),
+                LocalDate.of(2020, 1, 1)
+            )
 
         every { bookMapper.toBookCreationDTO(refEq(bookCreationRequest)) } returns bookCreationDTO
         every { bookService.addBook(refEq(bookCreationDTO)) } returns bookDTO
@@ -152,7 +161,13 @@ class BookControllerTest {
             BigDecimal("10.00"), LocalDate.of(2020, 1, 1)
         )
         val bookResponse1 =
-            BookDetailsResponse().id(1).title("title1").isbn("isbn1").publicationDate(LocalDate.of(2020, 1, 1))
+            BookDetailsResponse(
+                1,
+                "title 1",
+                "isbn 1",
+                BigDecimal("10.00"),
+                LocalDate.of(2020, 1, 1)
+            )
 
         every { bookMapper.toBookUpdateDTO(refEq(bookUpdateRequest)) } returns bookUpdateDTO
         every { bookService.updateBook(eq(1L), refEq(bookUpdateDTO)) } returns bookDTO

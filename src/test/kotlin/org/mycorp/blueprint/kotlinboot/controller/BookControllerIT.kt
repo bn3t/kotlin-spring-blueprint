@@ -41,7 +41,11 @@ class BookControllerIT {
             "Java Programming", "1234567890",
             BigDecimal("10.00"), LocalDate.of(2020, 1, 1)
         )
-        val bookListResponse = BookListResponse().title("title 1").isbn("isbn 1")
+        val bookListResponse = BookListResponse(
+            1,
+            "title 1",
+            "isbn 1",
+        )
         every { bookService.getBooks() } returns listOf(bookDTO)
         every { bookMapper.toBookListResponse(refEq(bookDTO)) } returns bookListResponse
 
@@ -52,7 +56,13 @@ class BookControllerIT {
 
     @Test
     fun `Call to API api-book by ID returns Books`() {
-        val bookDetailsResponse = BookDetailsResponse().title("title 1").isbn("isbn 1")
+        val bookDetailsResponse = BookDetailsResponse(
+            1,
+            "title 1",
+            "isbn 1",
+            BigDecimal("10.00"),
+            LocalDate.of(2020, 1, 1)
+        )
         every { bookService.getBook(eq(1L)) } returns BookDTO(
             1,
             "Java Programming", "1234567890",
@@ -66,7 +76,13 @@ class BookControllerIT {
 
     @Test
     fun `Call to API api-book by isbn returns Books`() {
-        val bookDetailsResponse = BookDetailsResponse().title("title 1").isbn("isbn 1")
+        val bookDetailsResponse = BookDetailsResponse(
+            1,
+            "title 1",
+            "isbn 1",
+            BigDecimal("10.00"),
+            LocalDate.of(2020, 1, 1)
+        )
         val bookDTO = BookDTO(
             1,
             "Java Programming", "1234567890",
@@ -86,23 +102,36 @@ class BookControllerIT {
             "Java Programming", "1234567890",
             BigDecimal("10.00"), LocalDate.of(2020, 1, 1)
         )
-        var bookCreationDTO = BookCreationDTO(
+        val bookCreationDTO = BookCreationDTO(
             "title 1",
             "isbn 1",
             BigDecimal("10.00"),
             LocalDate.of(2020, 1, 1)
         )
-        val bookDetailsResponse = BookDetailsResponse().title("title 1").isbn("isbn 1")
-        val bookRequest = BookCreationRequest().title("title 1").isbn("isbn 1")
+        val bookDetailsResponse = BookDetailsResponse(
+            1,
+            "title 1",
+            "isbn 1",
+            BigDecimal("10.00"),
+            LocalDate.of(2020, 1, 1)
+        )
+        val bookRequest = BookCreationRequest(
+            "title 1",
+            "isbn 1",
+            BigDecimal("10.00"),
+            LocalDate.of(2020, 1, 1)
+        )
 
         every { bookMapper.toBookCreationDTO(eq(bookRequest)) } returns bookCreationDTO
-        every { bookService.addBook(refEq(bookCreationDTO)) } returns newBookDTO;
+        every { bookService.addBook(refEq(bookCreationDTO)) } returns newBookDTO
         every { bookMapper.toBookDetailsResponse(refEq(newBookDTO)) } returns bookDetailsResponse
 
         val bookRequestJson = """
         {
             "title": "title 1",
-            "isbn": "isbn 1"
+            "isbn": "isbn 1",
+            "price": 10.00,
+            "publicationDate": "2020-01-01"
         }
     """.trimIndent()
 
@@ -124,7 +153,13 @@ class BookControllerIT {
             "Java Programming", "1234567890",
             BigDecimal("10.00"), LocalDate.of(2020, 1, 1)
         )
-        val bookDetailsResponse = BookDetailsResponse().title("title 1").isbn("isbn 1")
+        val bookDetailsResponse = BookDetailsResponse(
+            1,
+            "title 1",
+            "isbn 1",
+            BigDecimal("10.00"),
+            LocalDate.of(2020, 1, 1)
+        )
         val bookUpdateDTO = BookUpdateDTO(
             "title 1",
             BigDecimal("10.00"),

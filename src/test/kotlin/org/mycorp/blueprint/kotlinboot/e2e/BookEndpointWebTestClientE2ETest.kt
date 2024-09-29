@@ -1,4 +1,4 @@
-package org.mycorp.blueprint.kotlinboot
+package org.mycorp.blueprint.kotlinboot.e2e
 
 import org.junit.jupiter.api.Test
 import org.mycorp.blueprint.kotlinboot.rest.model.BookDetailsResponse
@@ -26,14 +26,12 @@ class BookEndpointWebTestClientE2ETest {
             .hasSize(2)
             .contains(
                 BookListResponse(
-                ).id(1)
-                    .title("Java Programming")
-                    .isbn("1234567890"),
+                    1, "Java Programming", "1234567890"
+                )
             ).contains(
                 BookListResponse(
-                ).id(2)
-                    .title("Kotlin Programming")
-                    .isbn("1234567891")
+                    2, "Kotlin Programming", "1234567891"
+                )
             )
     }
 
@@ -44,11 +42,13 @@ class BookEndpointWebTestClientE2ETest {
             .expectStatus().isOk()
             .expectBody(BookDetailsResponse::class.java)
             .isEqualTo(
-                BookDetailsResponse().id(1)
-                    .title("Java Programming")
-                    .isbn("1234567890").price(BigDecimal("100.00")).publicationDate(
-                        LocalDate.of(2020, 1, 1)
-                    )
+                BookDetailsResponse(
+                    1,
+                    "Java Programming",
+                    "1234567890",
+                    BigDecimal("100.00"),
+                    LocalDate.of(2020, 1, 1)
+                )
             )
     }
 
@@ -68,11 +68,13 @@ class BookEndpointWebTestClientE2ETest {
             .expectStatus().isOk()
             .expectBody(BookDetailsResponse::class.java)
             .isEqualTo(
-                BookDetailsResponse().id(1)
-                    .title("Java Programming")
-                    .isbn("1234567890").price(BigDecimal("100.00")).publicationDate(
-                        LocalDate.of(2020, 1, 1)
-                    )
+                BookDetailsResponse(
+                    1,
+                    "Java Programming",
+                    "1234567890",
+                    BigDecimal("100.00"),
+                    LocalDate.of(2020, 1, 1)
+                )
             )
     }
 
