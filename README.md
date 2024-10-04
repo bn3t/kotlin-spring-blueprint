@@ -1,3 +1,5 @@
+[![Build Status](https://github.com/bn3t/kotlin-spring-blueprint/actions/workflows/maven.yml/badge.svg)](https://github.com/bn3t/kotlin-spring-blueprint/actions/workflows/maven.yml)
+
 # Spring Boot Blueprint Application (Kotlin, Spring JPA, Hibernate)
 
 This project serves as a blueprint for creating Spring Boot applications using Kotlin, Spring Data JPA, and Hibernate.
