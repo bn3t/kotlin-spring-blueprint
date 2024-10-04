@@ -4,18 +4,18 @@ import org.assertj.core.api.Assertions.assertThat
 import org.hibernate.Session
 import org.hibernate.jdbc.Work
 import org.junit.jupiter.api.Test
+import org.mycorp.blueprint.kotlinboot.annotation.DataJpaTestContainerTest
 import org.mycorp.blueprint.kotlinboot.model.Book
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.test.context.jdbc.Sql
 import java.math.BigDecimal
 import java.sql.Connection
 import java.time.LocalDate
 
-@DataJpaTest(properties = arrayOf("spring.jpa.hibernate.ddl-auto=create-drop"))
-@Sql(scripts = arrayOf("data-books-h2.sql"))
-class BookRepositoryIT {
+@DataJpaTestContainerTest
+@Sql(scripts = arrayOf("data-books-postgres.sql"))
+class BookRepositoryPostgresIT {
     @Autowired
     lateinit var bookRepository: BookRepository
 
@@ -23,10 +23,10 @@ class BookRepositoryIT {
     lateinit var entityManager: TestEntityManager
 
     @Test
-    fun testDatabaseIsH2() {
+    fun testDatabaseIsPostgreSQL() {
         (entityManager.getEntityManager().getDelegate() as Session).doWork(Work { connection: Connection? ->
             assertThat(connection!!.isValid(1)).isTrue()
-            assertThat(connection.getMetaData().getDatabaseProductName()).isEqualTo("H2")
+            assertThat(connection.getMetaData().getDatabaseProductName()).isEqualTo("PostgreSQL")
         })
     }
 
