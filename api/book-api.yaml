@@ -2,6 +2,8 @@ openapi: 3.0.0
 info:
   title: Book API
   version: 1.0.0
+servers:
+  - url: http://localhost:8080
 paths:
   /api/books:
     get:
@@ -18,6 +20,16 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BookListResponse'
+              examples:
+                example-1:
+                  summary: A list of books
+                  value:
+                    - id: 1
+                      title: "The Great Gatsby"
+                      isbn: "9780743273565"
+                    - id: 2
+                      title: "1984"
+                      isbn: "9780451524935"
     post:
       tags:
         - Book
@@ -29,6 +41,14 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/BookCreationRequest'
+            examples:
+              example-1:
+                summary: A new book to add
+                value:
+                  title: "To Kill a Mockingbird"
+                  isbn: "9780061120084"
+                  price: 15.99
+                  publicationDate: "1960-07-11"
         required: true
       responses:
         '201':
@@ -37,6 +57,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BookDetailsResponse'
+              examples:
+                example-1:
+                  summary: Book created response
+                  value:
+                    id: 3
+                    title: "To Kill a Mockingbird"
+                    isbn: "9780061120084"
+                    price: 15.99
+                    publicationDate: "1960-07-11"
   /api/books/{bookId}:
     get:
       tags:
@@ -57,6 +86,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BookDetailsResponse'
+              examples:
+                example-1:
+                  summary: A single book response
+                  value:
+                    id: 1
+                    title: "The Great Gatsby"
+                    isbn: "9780743273565"
+                    price: 10.99
+                    publicationDate: "1925-04-10"
         '404':
           description: Book not found
     put:
@@ -77,6 +115,13 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/BookUpdateRequest'
+            examples:
+              example-1:
+                summary: Updated book information
+                value:
+                  title: "The Great Gatsby - Revised Edition"
+                  price: 12.99
+                  publicationDate: "1925-04-10"
         required: true
       responses:
         '200':
@@ -85,6 +130,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BookDetailsResponse'
+              examples:
+                example-1:
+                  summary: Book updated response
+                  value:
+                    id: 1
+                    title: "The Great Gatsby - Revised Edition"
+                    isbn: "9780743273565"
+                    price: 12.99
+                    publicationDate: "1925-04-10"
         '404':
           description: Book not found
     delete:
@@ -123,61 +177,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BookDetailsResponse'
+              examples:
+                example-1:
+                  summary: A single book response by ISBN
+                  value:
+                    id: 2
+                    title: "1984"
+                    isbn: "9780451524935"
+                    price: 9.99
+                    publicationDate: "1949-06-08"
         '404':
           description: Book not found
 components:
   schemas:
     BookDetailsResponse:
-      description: Book Response
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        title:
-          type: string
-        isbn:
-          type: string
-        price:
-          type: number
-          format: decimal
-        publicationDate:
-          type: string
-          format: date
+      $ref: './model-schema.yaml#/BookDetailsResponse'
     BookListResponse:
-      description: Book Response
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        title:
-          type: string
-        isbn:
-          type: string
+      $ref: './model-schema.yaml#/BookListResponse'
     BookCreationRequest:
-      description: Book Response
-      type: object
-      properties:
-        title:
-          type: string
-        isbn:
-          type: string
-        price:
-          type: number
-          format: decimal
-        publicationDate:
-          type: string
-          format: date
+      $ref: './model-schema.yaml#/BookCreationRequest'
     BookUpdateRequest:
-      description: Book Response
-      type: object
-      properties:
-        title:
-          type: string
-        price:
-          type: number
-          format: decimal
-        publicationDate:
-          type: string
-          format: date
+      $ref: './model-schema.yaml#/BookUpdateRequest'

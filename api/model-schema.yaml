@@ -1,0 +1,57 @@
+BookDetailsResponse:
+  description: Book Response
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+    title:
+      type: string
+    isbn:
+      type: string
+    price:
+      type: number
+      format: decimal
+    publicationDate:
+      type: string
+      format: date
+
+BookListResponse:
+  description: Book Response
+  type: object
+  properties:
+    id:
+      type: integer
+      format: int64
+    title:
+      type: string
+    isbn:
+      type: string
+
+BookCreationRequest:
+  description: Book Creation Request
+  type: object
+  properties:
+    title:
+      type: string
+    isbn:
+      type: string
+    price:
+      type: number
+      format: decimal
+    publicationDate:
+      type: string
+      format: date
+
+BookUpdateRequest:
+  description: Book Update Request
+  type: object
+  properties:
+    title:
+      type: string
+    price:
+      type: number
+      format: decimal
+    publicationDate:
+      type: string
+      format: date
